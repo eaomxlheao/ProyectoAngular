@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>
+        <span *ngIf="categoriaService.seleccion == 0">Todos los Cócteles</span>
+        <span *ngIf="categoriaService.seleccion == 1"
+          >Cócteles con Tequila</span
+        >
+        <span *ngIf="categoriaService.seleccion == 2">Cócteles con Ron</span>
+        <span *ngIf="categoriaService.seleccion == 3">Cócteles con Wiskey</span>
+        <span *ngIf="categoriaService.seleccion == 4">Cócteles con Vodka</span>
+      </h2>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <td>Category</td>
+      <td>Image</td>
+      <td>Name</td>
+      <td>Price</td>
+      <td></td>
+    </thead>
+    <tbody>
+      <tr *ngFor="let drink of drinkService.filteredDrinks">
+        <td>
+          <span *ngIf="drink.categoria == 1">Tequila</span>
+          <span *ngIf="drink.categoria == 2">Ron</span>
+          <span *ngIf="drink.categoria == 3">Wiskey</span>
+          <span *ngIf="drink.categoria == 4">Vodka</span>
+        </td>
+        <td><img [src]="drink.strDrinkThumb" /></td>
+        <td>{{ drink.strDrink }}</td>
+        <td>{{ drink.precio | currency }}</td>
+        <td>
+          <span class="input-group-btn">
+            <button class="btn btn-default" (click)="openModal(drink.idDrink)">
+              <i class="fas fa-search"></i>
+            </button>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

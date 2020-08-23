@@ -1,0 +1,70 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">
+    {{ selectedDrink.strDrink }}
+  </h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-2">
+          <img [src]="selectedDrink.strDrinkThumb" />
+        </div>
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-4">
+              Categoria
+            </div>
+            <div class="col-md-8">
+              <span *ngIf="selectedDrink.categoria == 1">Tequila</span>
+              <span *ngIf="selectedDrink.categoria == 2">Ron</span>
+              <span *ngIf="selectedDrink.categoria == 3">Wiskey</span>
+              <span *ngIf="selectedDrink.categoria == 4">Vodka</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              Descripcion
+            </div>
+            <div class="col-md-8">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus,
+              officia? Non repellat amet est repellendus accusamus, dolores
+              explicabo reiciendis officiis harum deleniti. Ad est consequatur
+              dignissimos quidem voluptas dolorem. Esse.
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              Precio
+            </div>
+            <div class="col-md-8">
+              {{ selectedDrink.precio | currency }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              Cantidad
+            </div>
+            <div class="col-md-8">
+              <input [(ngModel)]="drinks" type="number" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-danger" (click)="passBack()">
+        <i class="fa fa-shopping-cart"></i>
+        Actualizar
+      </button>
+    </div>
+  </div>
+</div>
