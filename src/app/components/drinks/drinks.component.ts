@@ -29,10 +29,8 @@ export class DrinksComponent implements OnInit {
     });
   }
 
-  openModal(id: string) {
-    this.selectedDrink = this.drinkService.drinks.filter(
-      (d) => d.idDrink == id
-    )[0];
+  openModal(id: Number) {
+    this.selectedDrink = this.drinkService.drinks.filter((d) => d.id == id)[0];
     const modalRef = this.modalService.open(DrinkDetalleComponent);
     modalRef.componentInstance.selectedDrink = this.selectedDrink;
     modalRef.componentInstance.actualizarCantidadDrinks.subscribe(

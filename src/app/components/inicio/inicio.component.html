@@ -1,23 +1,22 @@
-<div class="jumbotron">
-  <h1 class="display-4">Bar Ilusion</h1>
-  <p class="lead">
-    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore temporibus
-    aperiam officia ratione voluptatum incidunt non autem tenetur, velit
-    explicabo, nostrum debitis at praesentium cum architecto? Numquam fuga
-    maxime rerum.
-  </p>
-</div>
+<app-navbar></app-navbar>
 <div class="ng-container">
   <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-6">
+    <div class="col-md-12 centrado">
       <img src="../../../assets/kaos.jpg" />
     </div>
-    <div class="col-md-2">
-      <button class="btn btn-primary" (click)="navegarACajero()">
-        <i class="fa fa-money"></i> Entrar
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-12 centrado" *ngIf="user">
+      <h3>Hola {{ user.displayName }}!</h3>
+      <button class="btn btn-danger" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i> Salir
       </button>
     </div>
-    <div class="col-md-2"></div>
+    <div class="col-md-12 centrado" *ngIf="!user">
+      <button class="btn btn-primary" (click)="login()">
+        Entrar con Google
+      </button>
+    </div>
   </div>
 </div>

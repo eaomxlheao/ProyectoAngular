@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -21,7 +22,7 @@
       <td></td>
     </thead>
     <tbody>
-      <tr *ngFor="let drink of drinkService.filteredDrinks">
+      <tr *ngFor="let drink of drinks">
         <td>
           <span *ngIf="drink.categoria == 1">Tequila</span>
           <span *ngIf="drink.categoria == 2">Ron</span>
@@ -33,8 +34,18 @@
         <td>{{ drink.precio | currency }}</td>
         <td>
           <span class="input-group-btn">
-            <button class="btn btn-default" (click)="openModal(drink.idDrink)">
+            <button class="btn btn-default" (click)="openModal(drink.id)">
               <i class="fas fa-search"></i>
+            </button>
+          </span>
+          <span class="input-group-btn">
+            <button class="btn btn-default" (click)="editDrink(drink)">
+              <i class="fas fa-edit"></i>
+            </button>
+          </span>
+          <span class="input-group-btn">
+            <button class="btn btn-default" (click)="deleteDrink(drink)">
+              <i class="fas fa-trash"></i>
             </button>
           </span>
         </td>

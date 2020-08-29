@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Bar Ilusion</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/inicio"
+          >Home</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/cajero"
+          >Cajero</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" routerLink="/catalogo"
+          >Catálogo</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<p *ngIf="auth.user | async as user">
+  {{ user.displayName }}
+  <span
+    ><button class="btn btn-danger" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> Salir
+    </button></span
+  >
+</p>
