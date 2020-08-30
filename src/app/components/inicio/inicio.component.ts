@@ -33,6 +33,8 @@ export class InicioComponent implements OnInit {
       });
   }
   logout() {
-    this.auth.signOut();
+    this.auth.signOut().then(() => {
+      this.router.navigateByUrl('/inicio');
+    });
   }
 }
