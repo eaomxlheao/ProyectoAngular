@@ -19,7 +19,7 @@ export class InicioComponent implements OnInit {
   }
 
   navegarACajero() {
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/cajero');
   }
 
   login() {

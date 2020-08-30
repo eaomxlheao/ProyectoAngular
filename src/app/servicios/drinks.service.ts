@@ -6,6 +6,7 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
   AngularFirestoreDocument,
+  DocumentReference,
 } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { FBDrink } from '../interfaces/fbDrink';
@@ -18,18 +19,19 @@ export class DrinksService {
   filteredDrinks: Drink[] = [];
   drinksCollection: AngularFirestoreCollection<Drink>;
   fireDrinks: Observable<Drink[]>;
+  snapDrinks: Observable<Drink[]>;
   private drinkDoc: AngularFirestoreDocument<Drink>;
 
   constructor(public http: HttpClient, public db: AngularFirestore) {
-    this.drinksCollection = db.collection<FBDrink>('drinks');
+    this.drinksCollection = db.collection<Drink>('drinks');
     this.fireDrinks = this.drinksCollection.snapshotChanges().pipe(
-      map((actions) => {
-        return actions.map((a) => {
-          const data = a.payload.doc.data() as FBDrink;
+      map((actions) =>
+        actions.map((a) => {
+          const data = a.payload.doc.data() as Drink;
           const id = a.payload.doc.id;
           return { id, ...data };
-        });
-      })
+        })
+      )
     );
   }
 
@@ -70,42 +72,23 @@ export class DrinksService {
     return this.fireDrinks;
   }
 
-  addDrink(drink: Drink) {
-    this.drinksCollection.add(drink);
+  addDrink(drink: Drink): Promise<any> {
+    return this.drinksCollection.add({ ...drink });
   }
 
-  deleteDrink(drink) {
+  deleteDrink(id: string): Promise<any> {
+    this.drinkDoc = this.db.doc<Drink>(`drinks/${id}`);
+    return this.drinkDoc.delete();
+  }
+
+  editDrink(drink: Drink): Promise<any> {
     this.drinkDoc = this.db.doc<Drink>(`drinks/${drink.id}`);
-    this.drinkDoc.delete();
-  }
-
-  editDrink(drink) {
-    console.log('Producto en editProducto: ', drink);
-
-    //this.drinkDoc = this.db.doc<FBDrink>(`drinks/${drink.id}`);
-    //this.drinkDoc.update(drink);
-    this.getDrink(drink.id + '')
-      .toPromise()
-      .then((doc: any) => {
-        this.drinkDoc = doc;
-        this.drinkDoc.update(drink);
-      })
-      .catch((reason: any) => {
-        console.log('Error ' + reason);
-      });
-  }
-
-  getDrink(id: string): Observable<FBDrink[]> {
-    const productsDocuments = this.db.collection<FBDrink[]>('drinks');
-    return productsDocuments.snapshotChanges().pipe(
-      map((changes) =>
-        changes.map(({ payload: { doc } }) => {
-          const data = doc.data();
-          const id = doc.id;
-          return { id, ...data };
-        })
-      ),
-      map((drinks) => drinks.find((doc) => doc.id === id))
-    );
+    let drinkAEditar: any = {
+      nombre: drink.nombre,
+      imagen: drink.imagen,
+      precio: drink.precio,
+      categoria: drink.categoria,
+    };
+    return this.drinkDoc.update(drinkAEditar);
   }
 }

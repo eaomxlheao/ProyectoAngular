@@ -2,6 +2,13 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
+      <button type="button" class="btn btn-primary" (click)="open(content)">
+        Agregar Drink
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
       <h2>
         <span *ngIf="categoriaService.seleccion == 0">Todos los Cócteles</span>
         <span *ngIf="categoriaService.seleccion == 1"
@@ -34,17 +41,15 @@
         <td>{{ drink.precio | currency }}</td>
         <td>
           <span class="input-group-btn">
-            <button class="btn btn-default" (click)="openModal(drink.id)">
-              <i class="fas fa-search"></i>
-            </button>
-          </span>
-          <span class="input-group-btn">
-            <button class="btn btn-default" (click)="editDrink(drink)">
+            <button
+              class="btn btn-default"
+              (click)="openEdicion(edicion, drink)"
+            >
               <i class="fas fa-edit"></i>
             </button>
           </span>
           <span class="input-group-btn">
-            <button class="btn btn-default" (click)="deleteDrink(drink)">
+            <button class="btn btn-default" (click)="deleteDrink(drink.id)">
               <i class="fas fa-trash"></i>
             </button>
           </span>
@@ -53,3 +58,233 @@
     </tbody>
   </table>
 </div>
+
+<!-- Modal Add Drink -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Drink</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="addDrinkForm">
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label"
+            >Nombre:<span class="required">*</span></label
+          >
+        </div>
+        <div class="col-md-10">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="nombre"
+            [ngClass]="{
+              'is-invalid': submittedDrink && fAddDrink.nombre.errors
+            }"
+          />
+          <div
+            *ngIf="submittedDrink && fAddDrink.nombre.errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="fAddDrink.nombre.errors.required">
+              Nombre es requerido.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label"
+            >Categoria:<span class="required">*</span></label
+          >
+        </div>
+        <div class="col-md-10">
+          <select
+            class="custom-select"
+            formControlName="categoria"
+            [ngClass]="{
+              'is-invalid':
+                submittedUpdateDrink && fUpdateDrink.categoria.errors
+            }"
+          >
+            <option
+              *ngFor="let cat of categoriaService.categorias"
+              value="{{ cat.id }}"
+            >
+              {{ cat.descripcion }}
+            </option>
+          </select>
+          <div
+            *ngIf="submittedDrink && fAddDrink.categoria.errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="fAddDrink.categoria.errors.required">
+              Categoria es requerido.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label">Imagen:</label>
+        </div>
+        <div class="col-md-10">
+          <input type="text" class="form-control" formControlName="imagen" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label"
+            >Precio:<span class="required">*</span></label
+          >
+        </div>
+        <div class="col-md-10">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="precio"
+            [ngClass]="{
+              'is-invalid': submittedDrink && fAddDrink.precio.errors
+            }"
+          />
+          <div
+            *ngIf="submittedDrink && fAddDrink.precio.errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="fAddDrink.precio.errors.required">
+              Precio es requerido.
+            </div>
+            <div *ngIf="fAddDrink.precio.errors.pattern">
+              Este campo es un número.
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" (click)="addDrink()">Guardar</button>
+  </div>
+</ng-template>
+
+<!-- Modal Add Drink -->
+<ng-template #edicion let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Editar Drink</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="updateDrinkForm">
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label"
+            >Nombre:<span class="required">*</span></label
+          >
+        </div>
+        <div class="col-md-10">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="nombre"
+            [ngClass]="{
+              'is-invalid': submittedUpdateDrink && fUpdateDrink.nombre.errors
+            }"
+          />
+          <div
+            *ngIf="submittedUpdateDrink && fUpdateDrink.nombre.errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="fUpdateDrink.nombre.errors.required">
+              Nombre es requerido.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label"
+            >Categoria:<span class="required">*</span></label
+          >
+        </div>
+        <div class="col-md-10">
+          <select
+            class="custom-select"
+            formControlName="categoria"
+            [ngClass]="{
+              'is-invalid':
+                submittedUpdateDrink && fUpdateDrink.categoria.errors
+            }"
+          >
+            <option
+              *ngFor="let cat of categoriaService.categorias"
+              value="{{ cat.id }}"
+            >
+              {{ cat.descripcion }}
+            </option>
+          </select>
+          <div
+            *ngIf="submittedUpdateDrink && fUpdateDrink.categoria.errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="fUpdateDrink.categoria.errors.required">
+              Categoria es requerido.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label">Imagen:</label>
+        </div>
+        <div class="col-md-10">
+          <input type="text" class="form-control" formControlName="imagen" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label"
+            >Precio:<span class="required">*</span></label
+          >
+        </div>
+        <div class="col-md-10">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="precio"
+            [ngClass]="{
+              'is-invalid': submittedUpdateDrink && fUpdateDrink.precio.errors
+            }"
+          />
+          <div
+            *ngIf="submittedUpdateDrink && fUpdateDrink.precio.errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="fUpdateDrink.precio.errors.required">
+              Precio es requerido.
+            </div>
+            <div *ngIf="fUpdateDrink.precio.errors.pattern">
+              Este campo es un número.
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" (click)="editDrink()">Guardar</button>
+  </div>
+</ng-template>
