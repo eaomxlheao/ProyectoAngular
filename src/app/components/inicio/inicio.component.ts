@@ -32,6 +32,7 @@ export class InicioComponent implements OnInit {
         console.log(reason);
       });
   }
+
   logout() {
     this.auth.signOut().then(() => {
       this.router.navigateByUrl('/inicio');

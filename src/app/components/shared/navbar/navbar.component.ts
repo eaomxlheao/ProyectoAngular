@@ -9,9 +9,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
+  user: any;
   constructor(public auth: AngularFireAuth, public router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.auth.user.subscribe((resp: any) => {
+      this.user = resp;
+    });
+  }
 
   logout() {
     this.auth.signOut().then(() => {
